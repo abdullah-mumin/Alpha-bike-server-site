@@ -27,7 +27,7 @@ async function run() {
             const product = req.body;
             const result = await productsCollection.insertOne(product);
             res.json(result);
-            console.log(result);
+            // console.log(result);
         });
 
         app.get('/reviews', async (req, res) => {
@@ -41,6 +41,14 @@ async function run() {
             const cursor = productsCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
+        });
+
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            res.json(result);
+            console.log(result);
         });
 
         // load singlr product get api
@@ -67,6 +75,23 @@ async function run() {
             const result = await orders.toArray();
             res.json(result);
         });
+
+        // find all orders for admin
+        app.get('/manageOrders', async (req, res) => {
+            const cursor = purchasesCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+            // console.log(result);
+        });
+
+        app.put('/confirmation/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: "shipped" } };
+            const result = await purchasesCollection.updateOne(query, updateDoc);
+            res.json(result);
+            // console.log(result);
+        })
 
         // delete data to delete api
         app.delete('/delete/:id', async (req, res) => {
