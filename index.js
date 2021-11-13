@@ -113,9 +113,11 @@ async function run() {
             const query = { email: email };
             const user = await usersCollection.findOne(query);
             // console.log(user);
-            let isAdmin = false;
+            let isAdmin;
             if (user?.role === 'admin') {
                 isAdmin = true;
+            } else {
+                isAdmin = false;
             }
             res.json({ admin: isAdmin });
         });
@@ -135,25 +137,6 @@ async function run() {
             res.json(result);
             // console.log(result);
         })
-
-        // app.put('/users/admin', async (req, res) => {
-        //     const user = req.body;
-        //     const requester = req.decodedEmail;
-        //     console.log(requester);
-        //     if (requester) {
-        //         const requesterAccount = await usersCollection.findOne({ email: requester });
-        //         if (requesterAccount.roll === 'admin') {
-        //             const filter = { email: user.email };
-        //             const updateDoc = { $set: { roll: 'admin' } };
-        //             const result = await usersCollection.updateOne(filter, updateDoc);
-        //             res.json(result);
-        //             console.log(result);
-        //         }
-        //     }
-        //     else {
-        //         res.status(403).json({ message: 'You do not have this access!' });
-        //     }
-        // });
 
     }
 
